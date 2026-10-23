@@ -1,5 +1,6 @@
 from flask import Flask, request
 from urllib.parse import unquote_plus
+import json
 
 
 app = Flask(__name__)
@@ -36,12 +37,12 @@ def _sum2():
 
 @app.route("/sum3", methods=["POST"])
 def _sum3_json():
-    form_data = get_data(as_text=True)
+    form_data = request.get_data(as_text=True)
 
     data_object = json.loads(form_data)
 
     result_str = ",".join(
-            str(a1 + a2) for a1, a2 in zip(arrays["array1"], arrays["array2"])
+            str(a1 + a2) for a1, a2 in zip(data_object["array1"], data_object["array2"])
         )
     
     return f"Your result is {[result_str]}"
