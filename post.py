@@ -34,8 +34,20 @@ def _sum2():
 
     return f"Your result is {[result_str]}"
 
+@app.route("/sum3", methods=["POST"])
+def _sum3_json():
+    form_data = get_data(as_text=True)
+
+    data_object = json.loads(form_data)
+
+    result_str = ",".join(
+            str(a1 + a2) for a1, a2 in zip(arrays["array1"], arrays["array2"])
+        )
+    
+    return f"Your result is {[result_str]}"
+
 
 if __name__ == "__main__":
     app.run(debug=True)
 
-_sum2()
+
