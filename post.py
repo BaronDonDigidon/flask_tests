@@ -1,4 +1,5 @@
 from flask import Flask, request
+from urllib.parse import unquote_plus
 
 
 app = Flask(__name__)
@@ -18,8 +19,20 @@ def _sum2():
     form_data = request.get_data(as_text=True)
     request_data = unquote_plus(form_data)
 
-    print(f"form_data {form_data}")
-    print(f"request_data {request_data}")
+
+
+    arrays = {}
+
+    for encoded_chunk in request_data.split("&"):
+        k, v = encoded_chunk.split("=")
+
+        arrays[k] = [int(it) for it in v.split(",")]
+
+    result_str = ",".join(
+        str(a1 + a2) for a1, a2 in zip(arrays["array1"], arrays["array2"])
+    )
+
+    return f"Your result is {[result_str]}"
 
 
 if __name__ == "__main__":
