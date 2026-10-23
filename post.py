@@ -13,5 +13,16 @@ def sum():
 
     return f"Array of sums is {result}"
 
+@app.route("/sum2", methods=["POST"])
+def _sum2():
+    form_data = request.get_data(as_text=True)
+    request_data = unquote_plus(form_data)
+
+    print(f"form_data {form_data}")
+    print(f"request_data {request_data}")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
+
+_sum2()
