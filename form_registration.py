@@ -1,17 +1,26 @@
 from flask import Flask, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
-from wtforms.validators import InputRequired, Email, NumberRange
+from wtforms.validators import InputRequired, Email, NumberRange, DataRequired, Optional
 
 app = Flask(__name__)
 
 class RegistrationForm(FlaskForm):
-    email = StringField(validators=[InputRequired(), Email()])
-    phone = IntegerField(validators=[InputRequired(), NumberRange(min=1000000000, max=9000000000)])
-    name = StringField(validators=[InputRequired()])
-    adress = StringField(validators=[InputRequired()])
-    index = IntegerField()
-    comment = StringField()
+    email = StringField(validators=[
+        DataRequired(message="Email обязателен"),
+          Email()
+          ])
+    phone = IntegerField(validators=[
+        DataRequired(message="Номер телефона обязателен"), 
+        NumberRange(min=1000000000, max=9000000000)
+        ])
+    name = StringField(validators=[DataRequired(message="Имя обязательно")])
+    address = StringField(validators=[DataRequired(message="Адресс обязателен")])
+    index = IntegerField(validators=[
+        DataRequired(message="Индекс обязателен"), 
+        NumberRange(min=0,message="Индекс должен быть не отрицательным числом")
+        ])
+    comment = StringField(validators=[Optional()])
 
 @app.route("/registration", methods=["POST"])
 def registration():
